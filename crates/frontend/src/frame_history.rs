@@ -17,7 +17,7 @@ impl Default for FrameHistory {
 }
 
 impl FrameHistory {
-    // Called first
+    // Called first.
     pub fn on_new_frame(&mut self, now: f64, previous_frame_time: Option<f32>) {
         let previous_frame_time: f32 = previous_frame_time.unwrap_or_default();
         if let Some(latest) = self.frame_times.latest_mut() {
@@ -101,7 +101,8 @@ impl FrameHistory {
 
         let circle_color: Color32 = color;
         let radius: f32 = 2.0;
-        let right_side_time: f64 = ui.input(|i| i.time); // Time at right side of screen
+        // Time at right side of screen.
+        let right_side_time: f64 = ui.input(|i| i.time);
 
         for (time, cpu_usage) in history.iter() {
             let age: f32 = (right_side_time - time) as f32;
