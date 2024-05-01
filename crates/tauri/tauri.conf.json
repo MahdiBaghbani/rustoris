@@ -1,20 +1,20 @@
 {
   "package": {
-    "productName": "Tauri App",
+    "productName": "Rustoris",
     "version": "0.1.0"
   },
   "build": {
     "distDir": "../frontend/dist",
     "devPath": "http://localhost:8080",
     "beforeDevCommand": "cd frontend && trunk serve",
-    "beforeBuildCommand": "cd frontend && trunk build",
+    "beforeBuildCommand": "cd frontend && trunk build --release",
     "withGlobalTauri": true
   },
   "tauri": {
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev.desktop",
+      "identifier": "dev.mahdibaghbani.rustoris",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -52,10 +52,8 @@
     },
     "windows": [
       {
-        "title": "Tauri App",
-        "width": 800,
-        "height": 600,
-        "resizable": true,
+        "title": "Rustoris",
+        "maximized": true,
         "fullscreen": false
       }
     ],
