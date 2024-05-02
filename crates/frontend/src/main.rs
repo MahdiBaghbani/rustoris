@@ -12,7 +12,7 @@ fn main() {
     eframe::run_native(
         "Gilrs Input Tester",
         native_options,
-        Box::new(|cc| Box::new(frontend::MyEguiApp::new(cc))),
+        Box::new(|cc| Box::new(frontend::HomePage::new(cc))),
     ).expect("TODO: panic message");
 }
 
@@ -29,7 +29,7 @@ fn main() {
             .start(
                 "egui_canvas_id",
                 web_options,
-                Box::new(|cc| Box::new(frontend::MyEguiApp::new(cc))),
+                Box::new(|cc| Box::new(frontend::HomePage::new(cc))),
             )
             .await
             .expect("failed to start eframe");
