@@ -26,7 +26,7 @@ impl WasmInfoPanel {
 
 fn integration_ui(ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
     #[cfg(target_arch = "wasm32")]
-    ui.collapsing("Web info (location)", |ui| {
+    ui.collapsing("🌐 Web info (location)", |ui| {
         ui.style_mut().wrap = Some(false);
         ui.monospace(format!("{:#?}", _frame.info().web_info.location));
     });

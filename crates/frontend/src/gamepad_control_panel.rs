@@ -15,13 +15,13 @@ use gilrs::{
     GilrsBuilder,
 };
 
-pub struct GamepadPanel {
+pub struct GamepadControlPanel {
     gilrs: Gilrs,
     current_gamepad: Option<GamepadId>,
     log_messages: [Option<String>; 300],
 }
 
-impl Default for GamepadPanel {
+impl Default for GamepadControlPanel {
     fn default() -> Self {
         const INIT: Option<String> = None;
         let gilrs: Gilrs = GilrsBuilder::new().set_update_state(false).build().unwrap();
@@ -33,7 +33,7 @@ impl Default for GamepadPanel {
     }
 }
 
-impl GamepadPanel {
+impl GamepadControlPanel {
     pub fn update(&mut self) {
         while let Some(event) = self.gilrs.next_event() {
             self.log(format!(
