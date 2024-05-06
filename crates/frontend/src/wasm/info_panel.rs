@@ -4,18 +4,18 @@ use eframe::wgpu::AdapterInfo;
 #[derive(Default)]
 #[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 #[cfg_attr(feature = "serde", serde(default))]
-pub struct WasmInfoPanel {
+pub(crate) struct WasmInfoPanel {
     #[cfg_attr(feature = "serde", serde(skip))]
-    frame_history: crate::frame_history::FrameHistory,
+    frame_history: super::frame_history::FrameHistory,
 }
 
 impl WasmInfoPanel {
-    pub fn update(&mut self, ctx: &egui::Context, frame: &eframe::Frame) {
+    pub(crate) fn update(&mut self, ctx: &egui::Context, frame: &eframe::Frame) {
         self.frame_history
             .on_new_frame(ctx.input(|i| i.time), frame.info().cpu_usage);
     }
 
-    pub fn ui(&mut self, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
+    pub(crate) fn ui(&mut self, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
         integration_ui(ui, frame);
 
         ui.separator();

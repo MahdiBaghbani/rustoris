@@ -2,7 +2,7 @@ use egui::emath::RectTransform;
 use egui::style::WidgetVisuals;
 use egui::util::History;
 
-pub struct FrameHistory {
+pub(super) struct FrameHistory {
     frame_times: History<f32>,
 }
 
@@ -18,7 +18,7 @@ impl Default for FrameHistory {
 
 impl FrameHistory {
     // Called first.
-    pub fn on_new_frame(&mut self, now: f64, previous_frame_time: Option<f32>) {
+    pub(super) fn on_new_frame(&mut self, now: f64, previous_frame_time: Option<f32>) {
         let previous_frame_time: f32 = previous_frame_time.unwrap_or_default();
         if let Some(latest) = self.frame_times.latest_mut() {
             // rewrite history now that we know.
@@ -28,11 +28,11 @@ impl FrameHistory {
         self.frame_times.add(now, previous_frame_time);
     }
 
-    pub fn mean_frame_time(&self) -> f32 {
+    pub(super) fn mean_frame_time(&self) -> f32 {
         self.frame_times.average().unwrap_or_default()
     }
 
-    pub fn ui(&mut self, ui: &mut egui::Ui) {
+    pub(super) fn ui(&mut self, ui: &mut egui::Ui) {
         ui.label(format!(
             "Mean CPU usage: {:.2} ms / frame",
             1e3 * self.mean_frame_time()
@@ -42,7 +42,7 @@ impl FrameHistory {
             Does not include waiting for vsync.",
             );
         egui::warn_if_debug_build(ui);
-        
+
         egui::CollapsingHeader::new("📊 CPU usage history")
             .default_open(false)
             .show(ui, |ui| {

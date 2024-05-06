@@ -3,19 +3,14 @@ use std::time::UNIX_EPOCH;
 use eframe::emath::Vec2;
 use egui::RichText;
 use egui_plot::{MarkerShape, PlotPoints, Points};
-use gilrs::{
-    Axis,
-    ev::{
-        AxisOrBtn,
-        state::GamepadState,
-    },
-    Gamepad,
-    GamepadId,
-    Gilrs,
-    GilrsBuilder,
-};
+use gilrs::{Axis, ev::{
+    AxisOrBtn,
+    state::GamepadState,
+}, Gamepad, GamepadId, Gilrs, GilrsBuilder};
 
-pub struct GamepadControlPanel {
+use crate::command::joints::JointState;
+
+pub(crate) struct GamepadControlPanel {
     gilrs: Gilrs,
     current_gamepad: Option<GamepadId>,
     log_messages: [Option<String>; 300],
@@ -34,8 +29,9 @@ impl Default for GamepadControlPanel {
 }
 
 impl GamepadControlPanel {
-    pub fn update(&mut self) {
+    pub(crate) fn update(&mut self, joint_state: &mut JointState) {
         while let Some(event) = self.gilrs.next_event() {
+            joint_state.update(event.event);
             self.log(format!(
                 "{} : {} : {:?}",
                 event
@@ -53,16 +49,22 @@ impl GamepadControlPanel {
         }
     }
 
-    pub fn ui(&mut self, ui: &mut egui::Ui) {
-        self.gamepad_list_ui(ui);
+    pub(crate) fn ui(&mut self, ui: &mut egui::Ui) {
+        egui::ScrollArea::vertical()
+            .max_height(ui.available_height())
+            .show(ui, |ui| {
+                self.gamepad_list_ui(ui);
 
-        ui.separator();
+                ui.separator();
 
-        self.current_gamepad_details_ui(ui);
+                self.current_gamepad_details_ui(ui);
 
-        ui.separator();
+                ui.separator();
 
-        gamepad_logs(ui, &self.log_messages);
+                gamepad_logs(ui, &self.log_messages);
+
+                ui.allocate_space(ui.available_size());
+            });
     }
 
     fn log(&mut self, message: String) {

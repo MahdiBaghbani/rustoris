@@ -2,8 +2,9 @@ use eframe::egui;
 use egui::Frame;
 use egui_dock::{DockArea, DockState, NodeIndex, Style, SurfaceIndex};
 
-use crate::gamepad_control_panel::GamepadControlPanel;
-use crate::wasm_info_panel::WasmInfoPanel;
+use crate::command::joints::JointState;
+use crate::gamepad::control_panel::GamepadControlPanel;
+use crate::wasm::info_panel::WasmInfoPanel;
 
 struct TabViewer<'a> {
     added_nodes: &'a mut Vec<(SurfaceIndex, NodeIndex)>,
@@ -53,6 +54,7 @@ pub struct State {
     docks: Docks,
     gamepad_control_panel: GamepadControlPanel,
     wasm_info_panel: WasmInfoPanel,
+    joints: JointState,
 }
 
 #[derive(Default)]
@@ -89,7 +91,7 @@ impl HomePage {
 
 impl eframe::App for HomePage {
     fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
-        self.state.gamepad_control_panel.update();
+        self.state.gamepad_control_panel.update(&mut self.state.joints);
         self.state.wasm_info_panel.update(ctx, frame);
 
         egui::TopBottomPanel::top("top_p").show(ctx, |ui| {
@@ -135,6 +137,8 @@ impl eframe::App for HomePage {
             .show(ctx, |ui| {
                 ui.vertical_centered(|ui| {
                     ui.heading("🎮 Controllers");
+
+                    ui.label(format!("{:?}", self.state.joints.axis_to_differential_drive()));
                 });
             });
 
