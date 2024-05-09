@@ -33,27 +33,26 @@ impl FrameHistory {
     }
 
     pub(super) fn ui(&mut self, ui: &mut egui::Ui) {
-        ui.label(format!(
-            "Mean CPU usage: {:.2} ms / frame",
-            1e3 * self.mean_frame_time()
-        ))
+        ui.label(
+            format!(
+                "Mean CPU usage: {:.2} ms / frame",
+                1e3 * self.mean_frame_time()
+            )
+        )
             .on_hover_text(
                 "Includes all app logic, egui layout, tessellation, and rendering.\n\
-            Does not include waiting for vsync.",
+                Does not include waiting for vsync.",
             );
+
         egui::warn_if_debug_build(ui);
 
-        egui::CollapsingHeader::new("📊 CPU usage history")
-            .default_open(false)
-            .show(ui, |ui| {
-                self.graph(ui);
-            });
+        ui.label("📊 CPU usage history");
+
+        self.graph(ui);
     }
 
     fn graph(&mut self, ui: &mut egui::Ui) -> egui::Response {
         use egui::*;
-
-        ui.label("egui CPU usage history");
 
         let history: &History<f32> = &self.frame_times;
 

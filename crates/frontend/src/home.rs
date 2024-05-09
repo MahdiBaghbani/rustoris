@@ -118,16 +118,6 @@ impl eframe::App for HomePage {
                 ui.separator();
 
                 self.wasm32_info_panel_contents(ui, frame);
-
-                ui.separator();
-
-                ui.vertical_centered(|ui| {
-                    ui.heading("🎮 Gamepad Control Panel");
-                });
-
-                ui.separator();
-
-                self.gamepad_control_panel_contents(ui);
             });
 
         egui::SidePanel::right("side_panel_right")
@@ -136,10 +126,12 @@ impl eframe::App for HomePage {
             .max_width(300f32)
             .show(ctx, |ui| {
                 ui.vertical_centered(|ui| {
-                    ui.heading("🎮 Controllers");
-
-                    ui.label(format!("{:?}", self.state.joints.axis_to_differential_drive()));
+                    ui.heading("🎮 Gamepad Control Panel");
                 });
+
+                ui.separator();
+
+                self.gamepad_control_panel_contents(ui);
             });
 
         egui::CentralPanel::default()

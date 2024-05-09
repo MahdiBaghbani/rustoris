@@ -25,11 +25,11 @@ impl WasmInfoPanel {
 }
 
 fn integration_ui(ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+    
+    ui.label("🌐 Web info (location)");
+    ui.style_mut().wrap = Some(false);
     #[cfg(target_arch = "wasm32")]
-    ui.collapsing("🌐 Web info (location)", |ui| {
-        ui.style_mut().wrap = Some(false);
-        ui.monospace(format!("{:#?}", _frame.info().web_info.location));
-    });
+    ui.monospace(format!("{:#?}", _frame.info().web_info.location));
 
     if let Some(render_state) = _frame.wgpu_render_state() {
         let wgpu_adapter_details_ui = |ui: &mut egui::Ui, adapter: &wgpu::Adapter| {
